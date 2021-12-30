@@ -61,7 +61,7 @@ dl_config_shell() {
     if [ ! -a "$config_shell_path" ]; then
         touch $config_shell_path
     fi
-    curl -sL --connect-timeout 3 $valid_url > $config_shell_path
+    curl -s --connect-timeout 3 $valid_url > $config_shell_path
     cp $config_shell_path $dir_config/config.sh
     # 判断是否下载成功
     config_size=$(ls -l $config_shell_path | awk '{print $5}')
@@ -94,7 +94,7 @@ dl_extra_shell() {
     if [ ! -a "$extra_shell_path" ]; then
         touch $extra_shell_path
     fi
-    curl -sL --connect-timeout 3 $valid_url > $extra_shell_path
+    curl -s --connect-timeout 3 $valid_url > $extra_shell_path
     cp $extra_shell_path $dir_config/extra.sh
     # 判断是否下载成功
     extra_size=$(ls -l $extra_shell_path | awk '{print $5}')
@@ -171,7 +171,7 @@ dl_code_shell() {
     if [ ! -a "$code_shell_path" ]; then
         touch $code_shell_path
     fi
-    curl -sL --connect-timeout 3 $valid_url > $code_shell_path
+    curl -s --connect-timeout 3 $valid_url > $code_shell_path
     cp $code_shell_path $dir_config/code.sh
     # 判断是否下载成功
     code_size=$(ls -l $code_shell_path | awk '{print $5}')
@@ -237,7 +237,7 @@ dl_task_before_shell() {
     if [ ! -a "$task_before_shell_path" ]; then
         touch $task_before_shell_path
     fi
-    curl -sL --connect-timeout 3 $valid_url > $task_before_shell_path
+    curl -s --connect-timeout 3 $valid_url > $task_before_shell_path
     cp $task_before_shell_path $dir_config/task_before.sh
     # 判断是否下载成功
     task_before_size=$(ls -l $task_before_shell_path | awk '{print $5}')
@@ -311,7 +311,7 @@ add_curl_sample() {
     fi
 }
 run_curl_sample() {
-    curl -sL $valid_url -o /ql/sample/config.sample.sh && cp -rf /ql/sample/config.sample.sh /ql/config
+    curl -s $valid_url -o /ql/sample/config.sample.sh && cp -rf /ql/sample/config.sample.sh /ql/config
 }
 if [ "${all}" = 1 ]; then
     get_valid_config && add_curl_sample && run_curl_sample
