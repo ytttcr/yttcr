@@ -33,17 +33,35 @@ else
 fi
 
 
+# 检查域名连通性
+check_url() {
+    HTTP_CODE=$(curl -o /dev/null --connect-timeout 3 -s -w "%{http_code}" $1)
+    if [ $HTTP_CODE -eq 200 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
 
 
-
-
-
+# 获取有效 config.sh 链接
+get_valid_config() {
+    config_list=(https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh)
+    for url in ${config_list[@]}; do
+        check_url $url
+        if [ $? = 0 ]; then
+            valid_url=$url
+            echo "使用链接 $url"
+            break
+        fi
+    done
+}
 # 下载 config.sh
 dl_config_shell() {
     if [ ! -a "$config_shell_path" ]; then
         touch $config_shell_path
     fi
-    curl -sL --connect-timeout 3 https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh > $config_shell_path
+    curl -sL --connect-timeout 3 $valid_url > $config_shell_path
     cp $config_shell_path $dir_config/config.sh
     # 判断是否下载成功
     config_size=$(ls -l $config_shell_path | awk '{print $5}')
@@ -61,7 +79,7 @@ fi
 
 # 获取有效 extra.sh 链接
 get_valid_extra() {
-    extra_list=(https://raw.githubusercontents.com/shufflewzc/VIP/main/Tasks/qlrepo/extra.sh https://raw.sevencdn.com/shufflewzc/VIP/main/Tasks/qlrepo/extra.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Tasks/qlrepo/extra.sh)
+    extra_list=(https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Tasks/qlrepo/extra.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Tasks/qlrepo/extra.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Tasks/qlrepo/extra.sh)
     for url in ${extra_list[@]}; do
         check_url $url
         if [ $? = 0 ]; then
@@ -138,7 +156,7 @@ fi
 
 # 获取有效 code.sh 链接
 get_valid_code() {
-    code_list=(https://raw.githubusercontents.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/code.sh https://raw.sevencdn.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/code.sh https://ghproxy.com/https://raw.githubusercontents.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/code.sh)
+    code_list=(https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/code.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/code.sh https://ghproxy.com/https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/code.sh)
     for url in ${code_list[@]}; do
         check_url $url
         if [ $? = 0 ]; then
@@ -204,7 +222,7 @@ fi
 
 # 获取有效 task_before.sh 链接
 get_valid_task_before() {
-    task_before_list=(https://raw.githubusercontents.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh https://raw.sevencdn.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh https://ghproxy.com/https://raw.githubusercontents.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh)
+    task_before_list=(https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh https://ghproxy.com/https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh)
     for url in ${task_before_list[@]}; do
         check_url $url
         if [ $? = 0 ]; then
@@ -289,7 +307,7 @@ add_curl_sample() {
         echo "开始添加 task:curl config.sample.sh"
         # 获取token
         token=$(cat /ql/config/auth.json | jq --raw-output .token)
-        curl -s -H 'Accept: application/json' -H "Authorization: Bearer $token" -H 'Content-Type: application/json;charset=UTF-8' -H 'Accept-Language: zh-CN,zh;q=0.9' --data-binary '{"name":"自动更新模板","command":"curl -L https://raw.githubusercontents.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh -o /ql/sample/config.sample.sh && cp -rf /ql/sample/config.sample.sh /ql/config","schedule":"45 6,18 * * *"}' --compressed 'http://127.0.0.1:5700/api/crons?t=1627380635389'
+        curl -s -H 'Accept: application/json' -H "Authorization: Bearer $token" -H 'Content-Type: application/json;charset=UTF-8' -H 'Accept-Language: zh-CN,zh;q=0.9' --data-binary '{"name":"自动更新模板","command":"curl -L https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh -o /ql/sample/config.sample.sh && cp -rf /ql/sample/config.sample.sh /ql/config","schedule":"45 6,18 * * *"}' --compressed 'http://127.0.0.1:5700/api/crons?t=1627380635389'
     fi
 }
 run_curl_sample() {
