@@ -53,6 +53,7 @@ get_valid_config() {
             valid_url=$url
             echo "使用链接 $url"
             break
+            echo valid_url
         fi
     done
 }
