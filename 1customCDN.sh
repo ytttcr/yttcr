@@ -33,15 +33,7 @@ else
 fi
 
 
-# 检查域名连通性
-check_url() {
-    HTTP_CODE=$(curl -o /dev/null --connect-timeout 3 -s -w "%{http_code}" $1)
-    if [ $HTTP_CODE -eq 200 ]; then
-        return 0
-    else
-        return 1
-    fi
-}
+
 
 
 # 获取有效 config.sh 链接
