@@ -33,29 +33,14 @@ else
 fi
 
 
-# 检查域名连通性
-check_url() {
-    HTTP_CODE=$(curl -o /dev/null --connect-timeout 3 -s -w "%{http_code}" $1)
-    if [ $HTTP_CODE -eq 200 ]; then
-        return 0
-    else
-        return 1
-    fi
-}
 
 
-# 获取有效 config.sh 链接
-get_valid_config() {
-    config_list=(https://raw.githubusercontents.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh https://raw.sevencdn.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh)
-    for url in ${config_list[@]}; do
-        check_url $url
-        if [ $? = 0 ]; then
-            valid_url=$url
-            echo "使用链接 $url"
-            break
-        fi
-    done
-}
+
+
+valid_url=https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh
+
+
+
 # 下载 config.sh
 dl_config_shell() {
     if [ ! -a "$config_shell_path" ]; then
