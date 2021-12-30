@@ -37,16 +37,13 @@ fi
 
 
 
-valid_url=https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh
-
-
 
 # 下载 config.sh
 dl_config_shell() {
     if [ ! -a "$config_shell_path" ]; then
         touch $config_shell_path
     fi
-    curl -sL --connect-timeout 3 $valid_url > $config_shell_path
+    curl -sL --connect-timeout 3 https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/VIP/main/Conf/Qinglong/config.sample.sh > $config_shell_path
     cp $config_shell_path $dir_config/config.sh
     # 判断是否下载成功
     config_size=$(ls -l $config_shell_path | awk '{print $5}')
