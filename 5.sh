@@ -36,7 +36,7 @@ fi
 # 检查域名连通性
 check_url() {
     HTTP_CODE=$(curl -o /dev/null --connect-timeout 3 -s -w "%{http_code}" $1)
-    if [ $HTTP_CODE -eq 200 ]; then
+    if [ $HTTP_CODE -eq 302 ]; then
         return 0
     else
         return 1
